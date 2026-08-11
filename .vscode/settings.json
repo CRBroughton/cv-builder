@@ -3,7 +3,8 @@
         "docs",
         "dependencies",
         "models",
-        "migrations"
+        "migrations",
+        "schemas"
     ],
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
