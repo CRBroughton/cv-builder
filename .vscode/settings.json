@@ -1,5 +1,15 @@
 {
     "conventionalCommits.scopes": [
         "docs"
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit",
+            "source.fixAll.ruff": "explicit"
+        }
+    },
+    "ruff.lint.enable": true,
+    "python.analysis.typeCheckingMode": "basic"
 }
