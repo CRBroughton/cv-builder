@@ -6,7 +6,8 @@
         "migrations",
         "schemas",
         "core",
-        "configuration"
+        "configuration",
+        "api"
     ],
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
