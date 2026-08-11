@@ -2,7 +2,8 @@
     "conventionalCommits.scopes": [
         "docs",
         "dependencies",
-        "models"
+        "models",
+        "migrations"
     ],
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
