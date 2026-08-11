@@ -1,14 +1,15 @@
 {
     "conventionalCommits.scopes": [
         "docs",
-        "dependencies"
+        "dependencies",
+        "models"
     ],
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-            "source.organizeImports": "explicit",
-            "source.fixAll.ruff": "explicit"
+            "source.organizeImports": "always",
+            "source.fixAll.ruff": "always"
         }
     },
     "ruff.lint.enable": true,
