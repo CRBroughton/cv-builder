@@ -5,7 +5,8 @@
         "models",
         "migrations",
         "schemas",
-        "core"
+        "core",
+        "configuration"
     ],
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
@@ -16,5 +17,6 @@
         }
     },
     "ruff.lint.enable": true,
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true
 }
