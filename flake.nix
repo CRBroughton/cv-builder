@@ -30,6 +30,9 @@
           shellHook = ''
             echo "cv-builder dev shell — python $(python3 --version), uv $(uv --version), node $(node --version), pnpm $(pnpm --version)"
 
+            # compiled Python wheels (e.g. greenlet) need libstdc++ on the loader path
+            export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH"
+
             # docker CLI talks to the podman socket — no docker daemon on this host
             if [ -S "''${XDG_RUNTIME_DIR}/podman/podman.sock" ]; then
               export DOCKER_HOST="unix://''${XDG_RUNTIME_DIR}/podman/podman.sock"

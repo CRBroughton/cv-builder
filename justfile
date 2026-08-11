@@ -23,3 +23,15 @@ up:
 # tear down app + postgres
 down:
     docker compose down
+
+# run the test suite
+test:
+    uv run pytest
+
+# apply migrations
+migrate:
+    uv run alembic upgrade head
+
+# populate the dev db with sample data
+seed:
+    uv run python -m app.db.seed
