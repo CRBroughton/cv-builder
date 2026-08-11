@@ -21,6 +21,7 @@
 
             docker
             docker-compose
+            just
 
             nodejs_22
             pnpm
