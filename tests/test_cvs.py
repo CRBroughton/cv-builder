@@ -1,16 +1,16 @@
 from httpx import AsyncClient
 
 
-async def test_create_cv(client: AsyncClient) -> None:
-    await client.post(
-        "/auth/register",
-        json={"email": "cv@example.com", "password": "hunter2"},
-    )
+async def register_and_login(client: AsyncClient, email: str) -> str:
+    await client.post("/auth/register", json={"email": email, "password": "hunter2"})
     login = await client.post(
-        "/auth/login",
-        data={"username": "cv@example.com", "password": "hunter2"},
+        "/auth/login", data={"username": email, "password": "hunter2"}
     )
-    token = login.json()["access_token"]
+    return login.json()["access_token"]
+
+
+async def test_create_cv(client: AsyncClient) -> None:
+    token = await register_and_login(client, "cv@example.com")
 
     response = await client.post(
         "/cvs",
@@ -26,15 +26,7 @@ async def test_create_cv(client: AsyncClient) -> None:
 
 
 async def test_list_cvs_returns_users_cvs(client: AsyncClient) -> None:
-    await client.post(
-        "/auth/register",
-        json={"email": "list@example.com", "password": "hunter2"},
-    )
-    login = await client.post(
-        "/auth/login",
-        data={"username": "list@example.com", "password": "hunter2"},
-    )
-    token = login.json()["access_token"]
+    token = await register_and_login(client, "list@example.com")
     headers = {"Authorization": f"Bearer {token}"}
 
     await client.post("/cvs", json={"title": "My CV"}, headers=headers)
@@ -47,31 +39,14 @@ async def test_list_cvs_returns_users_cvs(client: AsyncClient) -> None:
 
 
 async def test_list_cvs_excludes_other_users(client: AsyncClient) -> None:
-    await client.post(
-        "/auth/register",
-        json={"email": "owner@example.com", "password": "hunter2"},
-    )
-    owner_login = await client.post(
-        "/auth/login",
-        data={"username": "owner@example.com", "password": "hunter2"},
-    )
-    owner_token = owner_login.json()["access_token"]
+    owner_token = await register_and_login(client, "owner@example.com")
     await client.post(
         "/cvs",
         json={"title": "Owner CV"},
         headers={"Authorization": f"Bearer {owner_token}"},
     )
 
-    await client.post(
-        "/auth/register",
-        json={"email": "other@example.com", "password": "hunter2"},
-    )
-    other_login = await client.post(
-        "/auth/login",
-        data={"username": "other@example.com", "password": "hunter2"},
-    )
-    other_token = other_login.json()["access_token"]
-
+    other_token = await register_and_login(client, "other@example.com")
     response = await client.get(
         "/cvs",
         headers={"Authorization": f"Bearer {other_token}"},
