@@ -1,6 +1,8 @@
+from collections.abc import Sequence
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import get_current_user
@@ -28,3 +30,13 @@ async def create(
     await session.commit()
     await session.refresh(cv)
     return cv
+
+
+@router.get("", response_model=list[CVResponse])
+async def get(
+    current_user: Annotated[User, Depends(get_current_user)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> Sequence[CV]:
+    result = await session.execute(select(CV).where(CV.user_id == current_user.id))
+
+    return result.scalars().all()
