@@ -46,3 +46,31 @@ async def test_login_rejects_unknown_email(client: AsyncClient) -> None:
         "/auth/login", data={"username": "ghost@example.com", "password": "hunter2"}
     )
     assert response.status_code == 401
+
+
+async def test_me_returns_current_user(client: AsyncClient) -> None:
+    await client.post(
+        "/auth/register", json={"email": "me@example.com", "password": "hunter2"}
+    )
+    login = await client.post(
+        "/auth/login", data={"username": "me@example.com", "password": "hunter2"}
+    )
+    token = login.json()["access_token"]
+
+    response = await client.get(
+        "/auth/me", headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 200
+    assert response.json()["email"] == "me@example.com"
+
+
+async def test_me_rejects_missing_token(client: AsyncClient) -> None:
+    response = await client.get("/auth/me")
+    assert response.status_code == 401
+
+
+async def test_me_rejects_invalid_token(client: AsyncClient) -> None:
+    response = await client.get(
+        "/auth/me", headers={"Authorization": "Bearer not-a-real-token"}
+    )
+    assert response.status_code == 401

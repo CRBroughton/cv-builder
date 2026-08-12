@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.dependencies import get_current_user
 from app.core.security import create_access_token, hash_password, verify_password
 from app.db.session import get_session
 from app.models.user import User
@@ -51,3 +52,8 @@ async def login(
         )
 
     return {"access_token": create_access_token(user.id), "token_type": "bearer"}
+
+
+@router.get("/me", response_model=UserResponse)
+async def me(current_user: Annotated[User, Depends(get_current_user)]) -> User:
+    return current_user
