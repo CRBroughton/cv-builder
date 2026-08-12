@@ -1,7 +1,8 @@
 from collections.abc import Sequence
 from typing import Annotated
+from uuid import UUID
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -40,3 +41,23 @@ async def get(
     result = await session.execute(select(CV).where(CV.user_id == current_user.id))
 
     return result.scalars().all()
+
+
+@router.get("/{cv_id}", response_model=CVResponse)
+async def get_cv(
+    cv_id: UUID,
+    current_user: Annotated[User, Depends(get_current_user)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> CV:
+    existing = await session.execute(
+        select(CV).where(CV.user_id == current_user.id).where(CV.id == cv_id)
+    )
+
+    cv = existing.scalar_one_or_none()
+
+    if cv is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Could not find CV"
+        )
+
+    return cv
