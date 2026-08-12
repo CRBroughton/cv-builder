@@ -82,3 +82,25 @@ async def test_get_cv_returns_404_for_other_user(client: AsyncClient) -> None:
         headers={"Authorization": f"Bearer {other_token}"},
     )
     assert response.status_code == 404
+
+
+async def test_updates_a_cvs_fields(client: AsyncClient) -> None:
+    token = await register_and_login(client, "getowner@example.com")
+    created = await client.post(
+        "/cvs",
+        json={"title": "My CV", "summary": "A summary"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    cv_id = created.json()["id"]
+
+    response = await client.patch(
+        f"/cvs/{cv_id}",
+        json={"title": "Updated Title"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 200
+    updated_cv = response.json()
+
+    assert updated_cv["title"] == "Updated Title"
+    assert updated_cv["summary"] == "A summary"
