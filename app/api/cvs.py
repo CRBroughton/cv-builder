@@ -89,3 +89,26 @@ async def patch(
     await session.commit()
     await session.refresh(cv)
     return cv
+
+
+@router.delete("/{cv_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete(
+    cv_id: UUID,
+    current_user: Annotated[User, Depends(get_current_user)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> None:
+    existing = await session.execute(
+        select(CV).where(CV.user_id == current_user.id).where(CV.id == cv_id)
+    )
+
+    cv = existing.scalar_one_or_none()
+
+    if cv is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Could not find CV"
+        )
+
+    await session.delete(cv)
+    await session.commit()
+
+    return None

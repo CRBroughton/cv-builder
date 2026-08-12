@@ -104,3 +104,44 @@ async def test_updates_a_cvs_fields(client: AsyncClient) -> None:
 
     assert updated_cv["title"] == "Updated Title"
     assert updated_cv["summary"] == "A summary"
+
+
+async def test_successfully_deletes_a_cv(client: AsyncClient) -> None:
+    token = await register_and_login(client, "getowner@example.com")
+    created = await client.post(
+        "/cvs",
+        json={"title": "My CV", "summary": "A summary"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    cv_id = created.json()["id"]
+
+    response = await client.delete(
+        f"/cvs/{cv_id}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 204
+
+    response = await client.get(
+        f"/cvs/{cv_id}",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 404
+
+
+async def test_cannot_delete_another_users_cv(client: AsyncClient) -> None:
+    token = await register_and_login(client, "getowner@example.com")
+    created = await client.post(
+        "/cvs",
+        json={"title": "My CV", "summary": "A summary"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    cv_id = created.json()["id"]
+
+    other_token = await register_and_login(client, "getother@example.com")
+
+    response = await client.delete(
+        f"/cvs/{cv_id}",
+        headers={"Authorization": f"Bearer {other_token}"},
+    )
+    assert response.status_code == 404
