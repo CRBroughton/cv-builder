@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ cv.title }}</title>
+    <style>
+        :root {
+            --ink: #1b2430;
+            --ink-soft: #4a5568;
+            --paper: #fbfaf7;
+            --line: #dcd7ca;
+            --accent: #2f5d55;
+            --accent-soft: #e7efec;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: Georgia, "Times New Roman", serif;
+            line-height: 1.55;
+        }
+
+        .sheet {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 64px 56px 80px;
+        }
+
+        header.masthead {
+            border-bottom: 2px solid var(--ink);
+            padding-bottom: 22px;
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            letter-spacing: -0.01em;
+            margin: 0 0 6px;
+            font-weight: 600;
+        }
+
+        .role {
+            font-family: Consolas, monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .eyebrow {
+            font-family: Consolas, monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin: 38px 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .eyebrow::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--line);
+        }
+
+        section:first-of-type .eyebrow {
+            margin-top: 0;
+        }
+
+        .profile p {
+            font-size: 1.02rem;
+            color: var(--ink);
+            max-width: 66ch;
+        }
+
+        .job {
+            margin-bottom: 26px;
+        }
+
+        .job:last-child {
+            margin-bottom: 0;
+        }
+
+        .job-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 4px 16px;
+        }
+
+        .job-title {
+            font-weight: 600;
+            font-size: 1.06rem;
+        }
+
+        .job-title .company {
+            color: var(--accent);
+        }
+
+        .job-meta {
+            font-family: Consolas, monospace;
+            font-size: 0.7rem;
+            color: var(--ink-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        ul.bullets {
+            margin: 10px 0 0;
+            padding-left: 1.1em;
+        }
+
+        ul.bullets li {
+            margin-bottom: 7px;
+            padding-left: 4px;
+        }
+
+        ul.bullets li::marker {
+            color: var(--accent);
+            content: "- ";
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 170px 1fr;
+            row-gap: 10px;
+            column-gap: 18px;
+            font-size: 0.95rem;
+        }
+
+        .skills-grid dt {
+            font-family: Consolas, monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            padding-top: 2px;
+        }
+
+        .skills-grid dd {
+            margin: 0;
+        }
+
+        .project {
+            margin-bottom: 20px;
+            padding: 16px 18px;
+            background: var(--accent-soft);
+            border-left: 3px solid var(--accent);
+        }
+
+        .project:last-child {
+            margin-bottom: 0;
+        }
+
+        .project-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .project p {
+            margin: 8px 0 0;
+            font-size: 0.94rem;
+        }
+
+        .edu {
+            margin-bottom: 18px;
+        }
+
+        .edu:last-child {
+            margin-bottom: 0;
+        }
+
+        .edu-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 4px 16px;
+        }
+
+        .edu-title {
+            font-weight: 600;
+            font-size: 1.06rem;
+        }
+
+        .edu-meta {
+            font-family: Consolas, monospace;
+            font-size: 0.7rem;
+            color: var(--ink-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            .sheet {
+                padding: 0;
+                max-width: none;
+            }
+
+            .project {
+                background: #fff;
+                border-left: 2px solid var(--ink);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sheet">
+
+        <header class="masthead">
+            <h1>{{ cv.title }}</h1>
+        </header>
+
+        {% if cv.summary %}
+        <section class="profile">
+            <div class="eyebrow">Profile</div>
+            <p>{{ cv.summary }}</p>
+        </section>
+        {% endif %}
+
+        {% set experience_sections = sections | selectattr("section_type", "equalto", "experience") | list %}
+        {% if experience_sections %}
+        <section>
+            <div class="eyebrow">Experience</div>
+            {% for s in experience_sections %}
+            <div class="job">
+                <div class="job-head">
+                    <div class="job-title">
+                        {{ s.content.title }}{% if s.content.company %} · <span class="company">{{ s.content.company
+                            }}</span>{% endif %}
+                    </div>
+                    {% if s.content.period %}<div class="job-meta">{{ s.content.period }}</div>{% endif %}
+                </div>
+                {% if s.content.bullets %}
+                <ul class="bullets">
+                    {% for bullet in s.content.bullets %}<li>{{ bullet }}</li>{% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        {% set skills_sections = sections | selectattr("section_type", "equalto", "skills") | list %}
+        {% if skills_sections %}
+        <section>
+            <div class="eyebrow">Technical Skills</div>
+            {% for s in skills_sections %}
+            <dl class="skills-grid">
+                {% for item in s.content.items %}
+                <dt>{{ item.label }}</dt>
+                <dd>{{ item.value }}</dd>
+                {% endfor %}
+            </dl>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        {% set project_sections = sections | selectattr("section_type", "equalto", "projects") | list %}
+        {% if project_sections %}
+        <section>
+            <div class="eyebrow">Notable Projects</div>
+            {% for s in project_sections %}
+            <div class="project">
+                <div class="project-title">{{ s.content.title }}{% if s.content.role %} <span class="role">{{
+                        s.content.role }}</span>{% endif %}</div>
+                {% if s.content.description %}<p>{{ s.content.description }}</p>{% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        {% set education_sections = sections | selectattr("section_type", "equalto", "education") | list %}
+        {% if education_sections %}
+        <section>
+            <div class="eyebrow">Education</div>
+            {% for s in education_sections %}
+            <div class="edu">
+                <div class="edu-head">
+                    <div class="edu-title">{{ s.content.qualification }}{% if s.content.institution %} · <span
+                            style="color:var(--accent)">{{ s.content.institution }}</span>{% endif %}</div>
+                    {% if s.content.period %}<div class="edu-meta">{{ s.content.period }}</div>{% endif %}
+                </div>
+                {% if s.content.description %}<p>{{ s.content.description }}</p>{% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+    </div>
+</body>
+
+</html>
