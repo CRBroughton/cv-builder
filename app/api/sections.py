@@ -11,7 +11,7 @@ from app.db.session import get_session
 from app.models.cv import CV
 from app.models.section import Section
 from app.models.user import User
-from app.schemas.section import SectionCreate, SectionResponse
+from app.schemas.section import SectionCreate, SectionResponse, SectionUpdate
 
 router = APIRouter(prefix="/cvs", tags=["cvs"])
 
@@ -72,3 +72,43 @@ async def get(
     )
 
     return existing.scalars().all()
+
+
+@router.patch("/{cv_id}/sections/{section_id}", response_model=SectionResponse)
+async def patch(
+    cv_id: UUID,
+    section_id: UUID,
+    data: SectionUpdate,
+    session: Annotated[AsyncSession, Depends(get_session)],
+    current_user: Annotated[User, Depends(get_current_user)],
+) -> Section:
+    existing = await session.execute(
+        select(CV).where(CV.user_id == current_user.id).where(CV.id == cv_id)
+    )
+
+    cv = existing.scalar_one_or_none()
+
+    if cv is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Could not find CV"
+        )
+
+    section_result = await session.execute(
+        select(Section).where(Section.id == section_id).where(Section.cv_id == cv_id)
+    )
+
+    section = section_result.scalar_one_or_none()
+
+    if section is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Could not find section"
+        )
+
+    updates = data.model_dump(exclude_unset=True)
+
+    for field, value in updates.items():
+        setattr(section, field, value)
+
+    await session.commit()
+    await session.refresh(section)
+    return section
