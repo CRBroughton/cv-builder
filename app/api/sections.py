@@ -11,7 +11,12 @@ from app.db.session import get_session
 from app.models.cv import CV
 from app.models.section import Section
 from app.models.user import User
-from app.schemas.section import SectionCreate, SectionResponse, SectionUpdate
+from app.schemas.section import (
+    SectionCreate,
+    SectionReorder,
+    SectionResponse,
+    SectionUpdate,
+)
 
 router = APIRouter(prefix="/cvs", tags=["cvs"])
 
@@ -72,6 +77,40 @@ async def get(
     )
 
     return existing.scalars().all()
+
+
+@router.patch("/{cv_id}/sections/reorder", status_code=status.HTTP_204_NO_CONTENT)
+async def reorder_sections(
+    cv_id: UUID,
+    data: SectionReorder,
+    session: Annotated[AsyncSession, Depends(get_session)],
+    current_user: Annotated[User, Depends(get_current_user)],
+) -> None:
+    cv_result = await session.execute(
+        select(CV).where(CV.user_id == current_user.id).where(CV.id == cv_id)
+    )
+
+    cv = cv_result.scalar_one_or_none()
+
+    if cv is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Could not find CV"
+        )
+
+    for item in data.sections:
+        result = await session.execute(
+            select(Section).where(Section.id == item.id).where(Section.cv_id == cv_id)
+        )
+        section = result.scalar_one_or_none()
+
+        if section is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Section not found"
+            )
+
+        section.order = item.order
+
+    await session.commit()
 
 
 @router.patch("/{cv_id}/sections/{section_id}", response_model=SectionResponse)

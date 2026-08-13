@@ -160,3 +160,36 @@ async def test_delete_section_returns_404_for_wrong_cv(client: AsyncClient) -> N
         headers={"Authorization": f"Bearer {other_token}"},
     )
     assert response.status_code == 404
+
+
+async def test_reorder_sections(client: AsyncClient) -> None:
+    token = await register_and_login(client, "reorder@example.com")
+    headers = {"Authorization": f"Bearer {token}"}
+
+    cv = await client.post("/cvs", json={"title": "My CV"}, headers=headers)
+    cv_id = cv.json()["id"]
+
+    s1 = await client.post(
+        f"/cvs/{cv_id}/sections",
+        json={"section_type": "experience", "order": 1, "content": {}},
+        headers=headers,
+    )
+    s2 = await client.post(
+        f"/cvs/{cv_id}/sections",
+        json={"section_type": "education", "order": 2, "content": {}},
+        headers=headers,
+    )
+    s1_id = s1.json()["id"]
+    s2_id = s2.json()["id"]
+
+    response = await client.patch(
+        f"/cvs/{cv_id}/sections/reorder",
+        json={"sections": [{"id": s1_id, "order": 2}, {"id": s2_id, "order": 1}]},
+        headers=headers,
+    )
+    assert response.status_code == 204
+
+    sections = await client.get(f"/cvs/{cv_id}/sections", headers=headers)
+    body = sections.json()
+    assert body[0]["id"] == s2_id
+    assert body[1]["id"] == s1_id
