@@ -9,11 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cv-builder/api": "workspace:*",
     "@cv-builder/components": "workspace:*",
     "@cv-builder/tokens": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "react-router-dom": "catalog:"
+    "react-router-dom": "catalog:",
+    "ts-pattern": "catalog:"
   },
   "devDependencies": {
     "@testing-library/dom": "catalog:",

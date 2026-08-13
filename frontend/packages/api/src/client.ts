@@ -44,12 +44,7 @@ export const api = {
       ),
     login: (username: string, password: string) =>
       ResultAsync.fromPromise(
-        zodios.login_auth_login_post(
-          new URLSearchParams({ username, password }) as unknown as {
-            username: string;
-            password: string;
-          },
-        ),
+        zodios.login_auth_login_post({ username, password }),
         toApiError,
       ),
     me: () => ResultAsync.fromPromise(zodios.me_auth_me_get(), toApiError),

@@ -1,42 +1,42 @@
+import { api } from "@cv-builder/api";
 import { Button } from "@cv-builder/components";
-import { Link, Route, Routes } from "react-router-dom";
+import { useState } from "react";
 
 export function App() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState<string | null>(null);
+
+  async function handleLogin() {
+    const result = await api.auth.login(email, password);
+    if (result.isOk()) {
+      setStatus(`logged in — token: ${result.value.access_token?.slice(0, 20)}...`);
+    } else {
+      setStatus(`error ${result.error.status}: ${result.error.message}`);
+    }
+  }
+
   return (
-    <div>
-      <Button onClick={() => alert("tokens work!")}>Click me</Button>
-    
-    {/* START: routes */}
-    {/* These routes and navigation have been generated for you */}
-    {/* Feel free to move and update them to fit your needs */}
-    <br/>
-    <hr/>
-    <br/>
-    <div role="navigation">
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/page-2">Page 2</Link></li>
-      </ul>
-    </div>
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <div>This is the generated root route. <Link to="/page-2">Click here for page 2.</Link></div>
-        }
-      />
-      <Route
-        path="/page-2"
-        element={
-          <div><Link to="/">Click here to go back to root page.</Link></div>
-        }
-      />
-    </Routes>
-    {/* END: routes */}
+    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+      <h1>CV Builder</h1>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", maxWidth: 320 }}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button onClick={handleLogin}>Login</Button>
+        {status && <p>{status}</p>}
+      </div>
     </div>
   );
 }
 
 export default App;
-
-
