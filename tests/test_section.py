@@ -116,3 +116,47 @@ async def test_patch_section_returns_404_for_wrong_cv(client: AsyncClient) -> No
         headers={"Authorization": f"Bearer {other_token}"},
     )
     assert response.status_code == 404
+
+
+async def test_delete_section(client: AsyncClient) -> None:
+    token = await register_and_login(client, "delete_section@example.com")
+    headers = {"Authorization": f"Bearer {token}"}
+
+    cv = await client.post("/cvs", json={"title": "My CV"}, headers=headers)
+    cv_id = cv.json()["id"]
+
+    created = await client.post(
+        f"/cvs/{cv_id}/sections",
+        json={"section_type": "experience", "order": 1, "content": {}},
+        headers=headers,
+    )
+    section_id = created.json()["id"]
+
+    response = await client.delete(
+        f"/cvs/{cv_id}/sections/{section_id}", headers=headers
+    )
+    assert response.status_code == 204
+
+    sections = await client.get(f"/cvs/{cv_id}/sections", headers=headers)
+    assert sections.json() == []
+
+
+async def test_delete_section_returns_404_for_wrong_cv(client: AsyncClient) -> None:
+    owner_token = await register_and_login(client, "del_owner@example.com")
+    owner_headers = {"Authorization": f"Bearer {owner_token}"}
+
+    cv = await client.post("/cvs", json={"title": "My CV"}, headers=owner_headers)
+    cv_id = cv.json()["id"]
+    created = await client.post(
+        f"/cvs/{cv_id}/sections",
+        json={"section_type": "experience", "order": 1, "content": {}},
+        headers=owner_headers,
+    )
+    section_id = created.json()["id"]
+
+    other_token = await register_and_login(client, "del_other@example.com")
+    response = await client.delete(
+        f"/cvs/{cv_id}/sections/{section_id}",
+        headers={"Authorization": f"Bearer {other_token}"},
+    )
+    assert response.status_code == 404
