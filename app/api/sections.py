@@ -15,7 +15,11 @@ from app.schemas.section import SectionCreate, SectionResponse
 router = APIRouter(prefix="/cvs", tags=["cvs"])
 
 
-@router.post("", response_model=SectionResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/{cv_id}/sections",
+    response_model=SectionResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 async def create(
     cv_id: UUID,
     data: SectionCreate,

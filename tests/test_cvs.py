@@ -6,7 +6,8 @@ async def register_and_login(client: AsyncClient, email: str) -> str:
     login = await client.post(
         "/auth/login", data={"username": email, "password": "hunter2"}
     )
-    return login.json()["access_token"]
+
+    return str(login.json()["access_token"])
 
 
 async def test_create_cv(client: AsyncClient) -> None:
