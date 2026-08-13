@@ -1,5 +1,6 @@
 from app.models.cv import CV
 from app.models.ping import Ping
+from app.models.section import Section
 from app.models.user import User
 
-__all__ = ["CV", "Ping", "User"]
+__all__ = ["CV", "Ping", "User", "Section"]

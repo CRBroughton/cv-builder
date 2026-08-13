@@ -28,6 +28,10 @@ down:
 test:
     uv run pytest
 
+# generate a new migration: just makemigration "description"
+makemigration name:
+    uv run alembic revision --autogenerate -m "{{name}}"
+
 # apply migrations
 migrate:
     uv run alembic upgrade head
