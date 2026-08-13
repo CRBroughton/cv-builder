@@ -1,0 +1,41 @@
+{
+  "color": {
+    "green": {
+      "500": { "$value": "#2f5d55", "$type": "color" },
+      "100": { "$value": "#e7efec", "$type": "color" }
+    },
+    "ink": {
+      "base": { "$value": "#1b2430", "$type": "color" },
+      "soft": { "$value": "#4a5568", "$type": "color" }
+    },
+    "paper": { "$value": "#fbfaf7", "$type": "color" },
+    "line": { "$value": "#dcd7ca", "$type": "color" }
+  },
+  "space": {
+    "1": { "$value": "4px", "$type": "dimension" },
+    "2": { "$value": "8px", "$type": "dimension" },
+    "3": { "$value": "12px", "$type": "dimension" },
+    "4": { "$value": "16px", "$type": "dimension" },
+    "5": { "$value": "20px", "$type": "dimension" },
+    "6": { "$value": "24px", "$type": "dimension" }
+  },
+  "font": {
+    "family": {
+      "serif": { "$value": "Georgia, 'Times New Roman', serif", "$type": "fontFamily" },
+      "mono": { "$value": "Consolas, monospace", "$type": "fontFamily" }
+    },
+    "size": {
+      "sm": { "$value": "14px", "$type": "dimension" },
+      "md": { "$value": "16px", "$type": "dimension" },
+      "lg": { "$value": "18px", "$type": "dimension" }
+    },
+    "weight": {
+      "regular": { "$value": 400, "$type": "number" },
+      "semibold": { "$value": 600, "$type": "number" }
+    }
+  },
+  "radius": {
+    "sm": { "$value": "4px", "$type": "dimension" },
+    "md": { "$value": "6px", "$type": "dimension" }
+  }
+}

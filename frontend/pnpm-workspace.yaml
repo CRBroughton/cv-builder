@@ -1,0 +1,56 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+allowBuilds:
+  "@swc/core": true
+  esbuild: true
+  nx: true
+
+catalog:
+  # nx
+  nx: 23.1.1
+  "@nx/devkit": 23.1.1
+  "@nx/eslint": 23.1.1
+  "@nx/eslint-plugin": 23.1.1
+  "@nx/js": 23.1.1
+  "@nx/playwright": 23.1.1
+  "@nx/react": 23.1.1
+  "@nx/vite": 23.1.1
+  "@nx/vitest": 23.1.1
+  "@nx/web": 23.1.1
+  "@nx/workspace": 23.1.1
+  "@swc-node/register": 1.11.1
+  "@swc/core": ~1.15.5
+  "@swc/helpers": ~0.5.18
+
+  # typescript
+  typescript: ~6.0.3
+  tslib: ^2.3.0
+  "@types/node": ^22.0.0
+  "@types/react": ^19.0.0
+  "@types/react-dom": ^19.0.0
+
+  # react
+  react: ^19.0.0
+  react-dom: ^19.0.0
+
+  # vite / vitest
+  vite: ^8.0.0
+  vitest: ~4.1.0
+  "@vitejs/plugin-react": ^6.0.0
+  "@vitest/coverage-v8": ~4.1.0
+  "@testing-library/dom": 10.4.0
+  "@testing-library/react": 16.3.0
+  jsdom: ^27.1.0
+
+  # eslint
+  eslint: ^9.8.0
+  jiti: 2.4.2
+
+  # packages
+  style-dictionary: ^5.0.0
+  tsx: ^4.19.0
+  clsx: ^2.1.1
+  react-router-dom: 6.30.3
+  "@playwright/test": ^1.62.1

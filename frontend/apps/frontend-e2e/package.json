@@ -1,0 +1,13 @@
+{
+  "name": "@frontend/frontend-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@frontend/frontend"
+    ]
+  },
+  "devDependencies": {
+    "@playwright/test": "catalog:"
+  }
+}
