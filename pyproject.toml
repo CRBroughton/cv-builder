@@ -47,5 +47,9 @@ select = ["E", "F", "I", "UP", "B"]
 python_version = "3.12"
 strict = true
 
+[[tool.mypy.overrides]]
+module = "weasyprint"
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
