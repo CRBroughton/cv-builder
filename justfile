@@ -39,3 +39,7 @@ migrate:
 # populate the dev db with sample data
 seed:
     uv run python -m app.db.seed
+
+# generate frontend API client from running backend OpenAPI spec
+generate-api:
+    cd frontend && pnpm generate:api

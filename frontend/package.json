@@ -6,6 +6,7 @@
     "dev": "pnpm --filter @cv-builder/web dev",
     "build": "pnpm --filter @cv-builder/tokens build && pnpm --filter @cv-builder/web build",
     "test": "pnpm nx run-many -t test --projects=@cv-builder/components,@cv-builder/web",
+    "generate:api": "pnpm --filter @cv-builder/api generate",
     "lint": "eslint ."
   },
   "private": true,
