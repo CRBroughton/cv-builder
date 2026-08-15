@@ -1,4 +1,4 @@
-import { Button, FieldInput, Stack } from "@cv-builder/components";
+import { Button, Container, FieldError, FieldInput, Stack, Text } from "@cv-builder/components";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.js";
@@ -11,7 +11,7 @@ export function Register() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
@@ -25,39 +25,37 @@ export function Register() {
   }
 
   return (
-    <Stack style={{ padding: "2rem", maxWidth: 360, margin: "4rem auto" }}>
-      <h1>Create account</h1>
-      <form onSubmit={handleSubmit}>
-        <Stack gap={3}>
-          <FieldInput
-            label="Email"
-            type="email"
-            placeholder="you@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <FieldInput
-            label="Password"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {error && (
-            <p role="alert" style={{ color: "red", margin: 0 }}>
-              {error}
-            </p>
-          )}
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Creating account…" : "Create account"}
-          </Button>
-        </Stack>
-      </form>
-      <p>
-        Already have an account? <Link to="/login">Sign in</Link>
-      </p>
-    </Stack>
+    <Container maxWidth={400} style={{ marginTop: "4rem" }}>
+      <Stack gap={4}>
+        <h1>Create account</h1>
+        <form onSubmit={handleSubmit}>
+          <Stack gap={3}>
+            <FieldInput
+              label="Email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <FieldInput
+              label="Password"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {error && <FieldError>{error}</FieldError>}
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Creating account…" : "Create account"}
+            </Button>
+          </Stack>
+        </form>
+        <Text>
+          Already have an account? <Link to="/login">Sign in</Link>
+        </Text>
+      </Stack>
+    </Container>
   );
 }

@@ -1,0 +1,16 @@
+.cv-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 56px;
+  border-bottom: 1px solid var(--cv-color-border-default);
+  background: var(--cv-color-surface-default);
+}
+
+.cv-navbar__brand {
+  font-size: var(--cv-font-size-md);
+  font-weight: var(--cv-font-weight-semibold);
+  color: var(--cv-color-text-primary);
+  letter-spacing: 0.01em;
+}
