@@ -21,9 +21,23 @@
     "clsx": "catalog:",
     "react": "catalog:"
   },
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test-storybook": "test-storybook --url http://localhost:6006; tsx scripts/generate-a11y-report.ts"
+  },
   "devDependencies": {
+    "@storybook/addon-a11y": "catalog:",
+    "@storybook/react": "catalog:",
+    "@storybook/react-vite": "catalog:",
+    "@storybook/test-runner": "catalog:",
+    "axe-playwright": "catalog:",
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "catalog:",
     "typescript": "catalog:"
   }
 }

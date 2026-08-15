@@ -43,6 +43,38 @@
               pkgs.fontconfig
             ]}:$LD_LIBRARY_PATH"
 
+            # Playwright bundled Chromium needs these system libs on NixOS
+            unset PLAYWRIGHT_BROWSERS_PATH
+            export PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true
+            export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [
+              pkgs.nspr
+              pkgs.nss
+              pkgs.alsa-lib
+              pkgs.atk
+              pkgs.at-spi2-atk
+              pkgs.cups
+              pkgs.libdrm
+              pkgs.libgbm
+              pkgs.expat
+              pkgs.libxkbcommon
+              pkgs.libx11
+              pkgs.libxcomposite
+              pkgs.libxcursor
+              pkgs.libxdamage
+              pkgs.libxext
+              pkgs.libxfixes
+              pkgs.libxi
+              pkgs.libxrandr
+              pkgs.libxrender
+              pkgs.libxcb
+              pkgs.gtk3
+              pkgs.dbus
+              pkgs.freetype
+              pkgs.pango
+              pkgs.cairo
+              pkgs.glib
+            ]}:$LD_LIBRARY_PATH"
+
             # docker CLI talks to the podman socket — no docker daemon on this host
             if [ -S "''${XDG_RUNTIME_DIR}/podman/podman.sock" ]; then
               export DOCKER_HOST="unix://''${XDG_RUNTIME_DIR}/podman/podman.sock"
