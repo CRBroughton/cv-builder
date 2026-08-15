@@ -35,6 +35,20 @@ const baseURL = (
 
 const zodios = createApiClient(baseURL);
 
+zodios.use({
+  name: "auth",
+  request: async (_, config) => {
+    const token = localStorage.getItem("cv_token");
+    if (token) {
+      (config as Record<string, unknown>)["headers"] = {
+        ...(config.headers as Record<string, string>),
+        Authorization: `Bearer ${token}`,
+      };
+    }
+    return config;
+  },
+});
+
 export const api = {
   auth: {
     register: (body: { email: string; password: string }) =>
