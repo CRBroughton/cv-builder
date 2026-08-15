@@ -9,7 +9,11 @@
       "soft": { "$value": "#4a5568", "$type": "color" }
     },
     "paper": { "$value": "#fbfaf7", "$type": "color" },
-    "line": { "$value": "#dcd7ca", "$type": "color" }
+    "line": { "$value": "#dcd7ca", "$type": "color" },
+    "red": {
+      "500": { "$value": "#c0392b", "$type": "color" },
+      "100": { "$value": "#fdecea", "$type": "color" }
+    }
   },
   "space": {
     "1": { "$value": "4px", "$type": "dimension" },

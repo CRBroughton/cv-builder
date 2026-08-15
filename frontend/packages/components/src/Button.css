@@ -9,7 +9,17 @@
   border-radius: var(--cv-radius-sm);
 }
 
-.cv-button:hover {
+.cv-button:hover:not(:disabled) {
   background-color: var(--cv-color-action-primary-hover);
   color: var(--cv-color-text-primary);
+}
+
+.cv-button:focus-visible {
+  outline: 3px solid var(--cv-color-action-primary);
+  outline-offset: 3px;
+}
+
+.cv-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

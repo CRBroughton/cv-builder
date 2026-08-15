@@ -1,0 +1,7 @@
+.cv-field-error {
+  display: block;
+  font-size: var(--cv-font-size-sm);
+  font-family: var(--cv-font-family-base);
+  color: var(--cv-color-action-destructive);
+  margin-top: 4px;
+}

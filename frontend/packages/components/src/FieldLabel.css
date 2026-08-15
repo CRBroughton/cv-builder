@@ -1,0 +1,7 @@
+.cv-field-label {
+  display: block;
+  font-size: var(--cv-font-size-sm);
+  font-family: var(--cv-font-family-base);
+  color: var(--cv-color-text-primary);
+  margin-bottom: 4px;
+}
