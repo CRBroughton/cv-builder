@@ -8,9 +8,9 @@ function Box({ children }: { children: React.ReactNode }) {
         background: "var(--cv-color-green-100)",
         border: "1px solid var(--cv-color-line)",
         borderRadius: "var(--cv-radius-sm)",
-        padding: "8px",
+        padding: "var(--cv-space-2)",
         textAlign: "center",
-        fontSize: "12px",
+        fontSize: "var(--cv-font-size-sm)",
       }}
     >
       {children}

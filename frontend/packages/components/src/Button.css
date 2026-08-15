@@ -1,4 +1,5 @@
 .cv-button {
+  flex-shrink: 0;
   background-color: var(--cv-color-action-primary);
   color: var(--cv-color-surface-default);
   border: 2px solid transparent;
