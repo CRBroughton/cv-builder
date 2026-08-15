@@ -1,0 +1,11 @@
+.cv-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--cv-space-2);
+  padding: var(--cv-space-8);
+  border: 1px dashed var(--cv-color-line);
+  border-radius: var(--cv-radius-md);
+  color: var(--cv-color-text-secondary);
+  text-align: center;
+}
