@@ -1,21 +1,22 @@
 .cv-button {
   background-color: var(--cv-color-action-primary);
   color: var(--cv-color-surface-default);
-  border: none;
+  border: 2px solid transparent;
   padding: var(--cv-space-component-padding-y) var(--cv-space-component-padding-x);
-  font-size: var(--cv-font-size-sm);
+  font-size: var(--cv-font-size-md);
   font-family: var(--cv-font-family-base);
+  font-weight: var(--cv-font-weight-semibold);
   cursor: pointer;
   border-radius: var(--cv-radius-sm);
+  letter-spacing: 0.01em;
 }
 
 .cv-button:hover:not(:disabled) {
   background-color: var(--cv-color-action-primary-hover);
-  color: var(--cv-color-text-primary);
 }
 
 .cv-button:focus-visible {
-  outline: 3px solid var(--cv-color-action-primary);
+  outline: 3px solid var(--cv-color-accent-default);
   outline-offset: 3px;
 }
 

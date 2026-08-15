@@ -3,5 +3,6 @@
   font-size: var(--cv-font-size-sm);
   font-family: var(--cv-font-family-base);
   color: var(--cv-color-text-primary);
+  font-weight: var(--cv-font-weight-semibold);
   margin-bottom: 4px;
 }

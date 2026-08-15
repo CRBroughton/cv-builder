@@ -1,8 +1,8 @@
 .cv-input {
-  border: 1px solid var(--cv-color-border-default);
+  border: 2px solid var(--cv-color-border-default);
   border-radius: var(--cv-radius-sm);
   padding: var(--cv-space-component-padding-y) var(--cv-space-component-padding-x);
-  font-size: var(--cv-font-size-sm);
+  font-size: var(--cv-font-size-md);
   font-family: var(--cv-font-family-base);
   background-color: var(--cv-color-surface-default);
   color: var(--cv-color-text-primary);

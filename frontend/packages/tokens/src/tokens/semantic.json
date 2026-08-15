@@ -8,15 +8,15 @@
       "default": { "$value": "{color.paper}", "$type": "color" }
     },
     "accent": {
-      "default": { "$value": "{color.green.500}", "$type": "color" },
-      "soft": { "$value": "{color.green.100}", "$type": "color" }
+      "default": { "$value": "{color.blue.900}", "$type": "color" },
+      "soft": { "$value": "{color.blue.100}", "$type": "color" }
     },
     "border": {
       "default": { "$value": "{color.line}", "$type": "color" }
     },
     "action": {
-      "primary": { "$value": "{color.green.500}", "$type": "color" },
-      "primary-hover": { "$value": "{color.green.100}", "$type": "color" },
+      "primary": { "$value": "{color.blue.900}", "$type": "color" },
+      "primary-hover": { "$value": "{color.blue.800}", "$type": "color" },
       "destructive": { "$value": "{color.red.500}", "$type": "color" },
       "destructive-soft": { "$value": "{color.red.100}", "$type": "color" }
     }
@@ -29,7 +29,7 @@
   },
   "font": {
     "family": {
-      "base": { "$value": "{font.family.serif}", "$type": "fontFamily" }
+      "base": { "$value": "{font.family.sans}", "$type": "fontFamily" }
     }
   }
 }
