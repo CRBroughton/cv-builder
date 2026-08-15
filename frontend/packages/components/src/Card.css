@@ -1,0 +1,20 @@
+.cv-card {
+  border: 1px solid var(--cv-color-line);
+  border-radius: var(--cv-radius-md);
+  padding: 1.25rem 1.5rem;
+  background: var(--cv-color-surface-default);
+  transition: box-shadow 0.15s ease;
+}
+
+.cv-card--interactive {
+  cursor: pointer;
+}
+
+.cv-card--interactive:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.cv-card--interactive:focus-visible {
+  outline: 3px solid var(--cv-color-accent-default);
+  outline-offset: 3px;
+}
