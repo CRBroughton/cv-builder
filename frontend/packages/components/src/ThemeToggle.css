@@ -1,0 +1,25 @@
+.cv-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: 2px solid var(--cv-color-border-default);
+  border-radius: var(--cv-radius-sm);
+  color: var(--cv-color-text-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.cv-theme-toggle:hover {
+  border-color: var(--cv-color-text-primary);
+  color: var(--cv-color-text-primary);
+}
+
+.cv-theme-toggle:focus-visible {
+  outline: 3px solid var(--cv-color-accent-default);
+  outline-offset: 3px;
+}

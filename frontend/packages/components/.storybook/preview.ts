@@ -1,9 +1,22 @@
 import "@cv-builder/tokens/dist/tokens.css";
-import type { Preview } from "@storybook/react";
+import "@cv-builder/tokens/dist/dark.css";
+import "./preview.css";
+import { withThemeByDataAttribute } from "@storybook/addon-themes";
+import type { Preview, ReactRenderer } from "@storybook/react";
 
 const wcag22aa = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 const preview: Preview = {
+  decorators: [
+    withThemeByDataAttribute<ReactRenderer>({
+      themes: {
+        light: "light",
+        dark: "dark",
+      },
+      defaultTheme: "light",
+      attributeName: "data-theme",
+    }),
+  ],
   parameters: {
     a11y: {
       options: {

@@ -1,0 +1,6 @@
+body {
+  background-color: var(--cv-color-surface-default);
+  color: var(--cv-color-text-primary);
+  font-family: var(--cv-font-family-base);
+  padding: 1rem;
+}

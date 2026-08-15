@@ -13,6 +13,7 @@
     "@cv-builder/api": "workspace:*",
     "@cv-builder/components": "workspace:*",
     "@cv-builder/tokens": "workspace:*",
+    "@iconify/react": "^6.0.2",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router-dom": "catalog:",

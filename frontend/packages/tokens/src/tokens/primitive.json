@@ -1,24 +1,35 @@
 {
   "color": {
     "blue": {
-      "900": { "$value": "#003078", "$type": "color" },
+      "100": { "$value": "#e8f0fb", "$type": "color" },
+      "200": { "$value": "#bfdbfe", "$type": "color" },
+      "400": { "$value": "#60a5fa", "$type": "color" },
+      "500": { "$value": "#3b82f6", "$type": "color" },
       "800": { "$value": "#00205e", "$type": "color" },
-      "100": { "$value": "#e8f0fb", "$type": "color" }
+      "900": { "$value": "#003078", "$type": "color" }
+    },
+    "gray": {
+      "50":  { "$value": "#f1f5f9", "$type": "color" },
+      "400": { "$value": "#94a3b8", "$type": "color" },
+      "600": { "$value": "#4a5568", "$type": "color" },
+      "950": { "$value": "#13171f", "$type": "color" }
     },
     "ink": {
       "base": { "$value": "#0b0c0c", "$type": "color" },
       "soft": { "$value": "#505a5f", "$type": "color" }
     },
     "paper": { "$value": "#ffffff", "$type": "color" },
-    "line": { "$value": "#b1b4b6", "$type": "color" },
+    "line":  { "$value": "#b1b4b6", "$type": "color" },
     "red": {
+      "400": { "$value": "#f87171", "$type": "color" },
       "500": { "$value": "#d4351c", "$type": "color" },
-      "100": { "$value": "#fde8e4", "$type": "color" }
+      "100": { "$value": "#fde8e4", "$type": "color" },
+      "950": { "$value": "#2d1515", "$type": "color" }
     }
   },
   "space": {
-    "1": { "$value": "4px", "$type": "dimension" },
-    "2": { "$value": "8px", "$type": "dimension" },
+    "1": { "$value": "4px",  "$type": "dimension" },
+    "2": { "$value": "8px",  "$type": "dimension" },
     "3": { "$value": "12px", "$type": "dimension" },
     "4": { "$value": "16px", "$type": "dimension" },
     "5": { "$value": "20px", "$type": "dimension" },
@@ -26,9 +37,9 @@
   },
   "font": {
     "family": {
-      "sans": { "$value": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif", "$type": "fontFamily" },
-      "serif": { "$value": "Georgia, 'Times New Roman', serif", "$type": "fontFamily" },
-      "mono": { "$value": "Consolas, monospace", "$type": "fontFamily" }
+      "sans":  { "$value": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif", "$type": "fontFamily" },
+      "serif": { "$value": "Georgia, 'Times New Roman', serif",                         "$type": "fontFamily" },
+      "mono":  { "$value": "Consolas, monospace",                                       "$type": "fontFamily" }
     },
     "size": {
       "sm": { "$value": "14px", "$type": "dimension" },
@@ -36,7 +47,7 @@
       "lg": { "$value": "18px", "$type": "dimension" }
     },
     "weight": {
-      "regular": { "$value": 400, "$type": "number" },
+      "regular":  { "$value": 400, "$type": "number" },
       "semibold": { "$value": 600, "$type": "number" }
     }
   },

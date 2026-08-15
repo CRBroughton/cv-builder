@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@cv-builder/tokens": "workspace:*",
+    "@iconify/react": "^6.0.2",
     "clsx": "catalog:",
     "react": "catalog:"
   },
@@ -28,16 +29,17 @@
   },
   "devDependencies": {
     "@storybook/addon-a11y": "catalog:",
+    "@storybook/addon-themes": "^10.5.8",
     "@storybook/react": "catalog:",
     "@storybook/react-vite": "catalog:",
     "@storybook/test-runner": "catalog:",
-    "axe-playwright": "catalog:",
     "@types/node": "catalog:",
-    "tsx": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "axe-playwright": "catalog:",
     "react-dom": "catalog:",
     "storybook": "catalog:",
+    "tsx": "catalog:",
     "typescript": "catalog:"
   }
 }
