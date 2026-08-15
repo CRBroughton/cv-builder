@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Accessibility Audit — CV Builder</title>
+<style>
+/* ── Tokens ──────────────────────────────────────────────────────────────── */
+:root {
+  --bg: #F8F9FC;
+  --bg-2: #EEF1F8;
+  --surface: #FFFFFF;
+  --border: #DDE3F0;
+  --border-2: #C8D0E6;
+  --text: #0F172A;
+  --text-muted: #5A6585;
+  --text-xmuted: #8E9BBB;
+  --accent: #2563EB;
+  --accent-soft: #EFF3FF;
+
+  --critical: #DC2626;
+  --critical-soft: #FEF2F2;
+  --serious: #C2410C;
+  --serious-soft: #FFF7ED;
+  --moderate: #B45309;
+  --moderate-soft: #FFFBEB;
+  --minor: #6D28D9;
+  --minor-soft: #F5F3FF;
+  --pass: #15803D;
+  --pass-soft: #F0FDF4;
+  --incomplete: #0369A1;
+  --incomplete-soft: #F0F9FF;
+
+  --radius: 6px;
+  --mono: "SF Mono", "Cascadia Code", "Fira Mono", Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1117;
+    --bg-2: #161B22;
+    --surface: #161B22;
+    --border: #21262D;
+    --border-2: #30363D;
+    --text: #E6EDF3;
+    --text-muted: #8B949E;
+    --text-xmuted: #6E7681;
+    --accent: #58A6FF;
+    --accent-soft: #0D2044;
+
+    --critical: #FF7B72;
+    --critical-soft: #2D0D0D;
+    --serious: #FFA657;
+    --serious-soft: #2D1500;
+    --moderate: #E3B341;
+    --moderate-soft: #2D1F00;
+    --minor: #C084FC;
+    --minor-soft: #1A0D2E;
+    --pass: #3FB950;
+    --pass-soft: #0A1F0F;
+    --incomplete: #79C0FF;
+    --incomplete-soft: #041825;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0D1117;
+  --bg-2: #161B22;
+  --surface: #161B22;
+  --border: #21262D;
+  --border-2: #30363D;
+  --text: #E6EDF3;
+  --text-muted: #8B949E;
+  --text-xmuted: #6E7681;
+  --accent: #58A6FF;
+  --accent-soft: #0D2044;
+
+  --critical: #FF7B72;
+  --critical-soft: #2D0D0D;
+  --serious: #FFA657;
+  --serious-soft: #2D1500;
+  --moderate: #E3B341;
+  --moderate-soft: #2D1F00;
+  --minor: #C084FC;
+  --minor-soft: #1A0D2E;
+  --pass: #3FB950;
+  --pass-soft: #0A1F0F;
+  --incomplete: #79C0FF;
+  --incomplete-soft: #041825;
+}
+
+/* ── Reset & base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+code, pre { font-family: var(--mono); }
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+.header-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+}
+.header-logo {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.header-divider { width: 1px; height: 1.5rem; background: var(--border-2); }
+.header-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+}
+.header-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: right;
+  line-height: 1.4;
+}
+.wcag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+}
+
+/* ── Main layout ──────────────────────────────────────────────────────────── */
+.main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* ── Summary ──────────────────────────────────────────────────────────────── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.stat-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+}
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.stat-tile.violations .stat-value { color: var(--critical); }
+.stat-tile.passes .stat-value { color: var(--pass); }
+.stat-tile.incomplete .stat-value { color: var(--incomplete); }
+.stat-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+/* ── Impact bar ───────────────────────────────────────────────────────────── */
+.impact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+.impact-card-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+.impact-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  gap: 2px;
+  background: var(--bg-2);
+  margin-bottom: 0.6rem;
+}
+.bar-seg { height: 100%; border-radius: 2px; min-width: 4px; transition: opacity 0.15s; }
+.bar-seg:hover { opacity: 0.8; }
+.bar-critical { background: var(--critical); }
+.bar-serious  { background: var(--serious); }
+.bar-moderate { background: var(--moderate); }
+.bar-minor    { background: var(--minor); }
+.bar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  align-items: center;
+}
+.legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.dot-critical { background: var(--critical); }
+.dot-serious  { background: var(--serious); }
+.dot-moderate { background: var(--moderate); }
+.dot-minor    { background: var(--minor); }
+.no-violations {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--pass);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.no-violations-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+
+/* ── Section headings ─────────────────────────────────────────────────────── */
+.section-heading {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-count {
+  font-variant-numeric: tabular-nums;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.68rem;
+}
+.section { margin-bottom: 2.5rem; }
+
+/* ── Violation cards ──────────────────────────────────────────────────────── */
+.violation-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  border-left-width: 3px;
+}
+.violation-card.impact-critical { border-left-color: var(--critical); }
+.violation-card.impact-serious  { border-left-color: var(--serious); }
+.violation-card.impact-moderate { border-left-color: var(--moderate); }
+.violation-card.impact-minor    { border-left-color: var(--minor); }
+.card-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  flex-wrap: wrap;
+}
+.card-summary::-webkit-details-marker { display: none; }
+.card-summary::before {
+  content: "▶";
+  font-size: 0.6rem;
+  color: var(--text-xmuted);
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+details[open] > .card-summary::before { transform: rotate(90deg); }
+.impact-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.badge-critical { background: var(--critical-soft); color: var(--critical); }
+.badge-serious  { background: var(--serious-soft);  color: var(--serious); }
+.badge-moderate { background: var(--moderate-soft); color: var(--moderate); }
+.badge-minor    { background: var(--minor-soft);    color: var(--minor); }
+.rule-id {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.rule-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  flex: 1;
+  min-width: 0;
+}
+.node-count {
+  font-size: 0.72rem;
+  color: var(--text-xmuted);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.rule-link {
+  font-size: 0.68rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.card-body {
+  padding: 0 1rem 1rem 2.5rem;
+  border-top: 1px solid var(--border);
+}
+.rule-help {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 0.75rem 0 0.75rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+.node-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.node-item { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.node-target {
+  background: var(--bg-2);
+  padding: 0.4rem 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.node-html {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.node-summary {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Passes table ─────────────────────────────────────────────────────────── */
+details.passes-details {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+details.passes-details > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--pass);
+}
+details.passes-details > summary::-webkit-details-marker { display: none; }
+details.passes-details > summary::before {
+  content: "▶";
+  font-size: 0.6rem;
+  transition: transform 0.15s;
+}
+details.passes-details[open] > summary::before { transform: rotate(90deg); }
+.passes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+.passes-table thead th {
+  text-align: left;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+}
+.passes-table tbody tr { border-bottom: 1px solid var(--border); }
+.passes-table tbody tr:last-child { border-bottom: none; }
+.passes-table tbody td { padding: 0.55rem 1rem; vertical-align: top; }
+.pass-id {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--pass);
+  white-space: nowrap;
+}
+.pass-desc { color: var(--text-muted); }
+.pass-count {
+  color: var(--text-xmuted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  font-size: 0.72rem;
+  color: var(--text-xmuted);
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .main { padding: 1rem; }
+  .header-inner { flex-wrap: wrap; }
+  .summary-grid { grid-template-columns: 1fr 1fr; }
+  .card-summary { gap: 0.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <span class="header-logo">CV Builder</span>
+    <div class="header-divider"></div>
+    <span class="header-title">Accessibility Audit Report</span>
+    <div class="header-meta">
+      <div><span class="wcag-badge">WCAG 2.2 AA</span></div>
+      <div style="margin-top:0.3rem">14 Aug 2026 at 16:58</div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Summary tiles -->
+  <div class="summary-grid">
+    <div class="stat-tile">
+      <div class="stat-label">Stories Tested</div>
+      <div class="stat-value">7</div>
+      <div class="stat-sub">component stories</div>
+    </div>
+    <div class="stat-tile violations">
+      <div class="stat-label">Violations</div>
+      <div class="stat-value">0</div>
+      <div class="stat-sub">0 elements affected</div>
+    </div>
+    <div class="stat-tile passes">
+      <div class="stat-label">Passing Rules</div>
+      <div class="stat-value">19</div>
+      <div class="stat-sub">across 94 elements</div>
+    </div>
+    <div class="stat-tile incomplete">
+      <div class="stat-label">Needs Review</div>
+      <div class="stat-value">1</div>
+      <div class="stat-sub">manual check required</div>
+    </div>
+  </div>
+
+  <!-- Impact breakdown -->
+  
+
+  <!-- Violations -->
+  <section class="section">
+    <div class="section-heading">
+      Violations
+      <span class="section-count">0</span>
+    </div>
+    <div class="no-violations"><span class="no-violations-icon">✓</span>No accessibility violations detected.</div>
+  </section>
+
+  <!-- Passes -->
+  
+  <section class="section">
+    <div class="section-heading">
+      Passing Rules
+      <span class="section-count">19</span>
+    </div>
+    <details class="passes-details">
+      <summary>Show 19 passing rules</summary>
+      <div style="overflow-x:auto">
+        <table class="passes-table">
+          <thead>
+            <tr>
+              <th>Rule ID</th>
+              <th>Description</th>
+              <th style="text-align:right">Elements</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+    <tr>
+      <td class="pass-id">aria-hidden-body</td>
+      <td class="pass-desc">Ensure aria-hidden=&quot;true&quot; is not present on the document body.</td>
+      <td class="pass-count">7</td>
+    </tr>
+    <tr>
+      <td class="pass-id">aria-hidden-focus</td>
+      <td class="pass-desc">Ensure aria-hidden elements are not focusable nor contain focusable elements</td>
+      <td class="pass-count">7</td>
+    </tr>
+    <tr>
+      <td class="pass-id">avoid-inline-spacing</td>
+      <td class="pass-desc">Ensure that text spacing set through style attributes can be adjusted with custom stylesheets</td>
+      <td class="pass-count">16</td>
+    </tr>
+    <tr>
+      <td class="pass-id">color-contrast</td>
+      <td class="pass-desc">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</td>
+      <td class="pass-count">8</td>
+    </tr>
+    <tr>
+      <td class="pass-id">document-title</td>
+      <td class="pass-desc">Ensure each HTML document contains a non-empty &lt;title&gt; element</td>
+      <td class="pass-count">7</td>
+    </tr>
+    <tr>
+      <td class="pass-id">duplicate-id-aria</td>
+      <td class="pass-desc">Ensure every id attribute value used in ARIA and in labels is unique</td>
+      <td class="pass-count">6</td>
+    </tr>
+    <tr>
+      <td class="pass-id">form-field-multiple-labels</td>
+      <td class="pass-desc">Ensure form field does not have multiple label elements</td>
+      <td class="pass-count">5</td>
+    </tr>
+    <tr>
+      <td class="pass-id">html-has-lang</td>
+      <td class="pass-desc">Ensure every HTML document has a lang attribute</td>
+      <td class="pass-count">7</td>
+    </tr>
+    <tr>
+      <td class="pass-id">html-lang-valid</td>
+      <td class="pass-desc">Ensure the lang attribute of the &lt;html&gt; element has a valid value</td>
+      <td class="pass-count">7</td>
+    </tr>
+    <tr>
+      <td class="pass-id">label</td>
+      <td class="pass-desc">Ensure every form element has a label</td>
+      <td class="pass-count">5</td>
+    </tr>
+    <tr>
+      <td class="pass-id">meta-viewport</td>
+      <td class="pass-desc">Ensure &lt;meta name=&quot;viewport&quot;&gt; does not disable text scaling and zooming</td>
+      <td class="pass-count">7</td>
+    </tr>
+    <tr>
+      <td class="pass-id">target-size</td>
+      <td class="pass-desc">Ensure touch targets have sufficient size and space</td>
+      <td class="pass-count">3</td>
+    </tr>
+    <tr>
+      <td class="pass-id">button-name</td>
+      <td class="pass-desc">Ensure buttons have discernible text</td>
+      <td class="pass-count">2</td>
+    </tr>
+    <tr>
+      <td class="pass-id">nested-interactive</td>
+      <td class="pass-desc">Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies</td>
+      <td class="pass-count">2</td>
+    </tr>
+    <tr>
+      <td class="pass-id">aria-allowed-attr</td>
+      <td class="pass-desc">Ensure an element's role supports its ARIA attributes</td>
+      <td class="pass-count">1</td>
+    </tr>
+    <tr>
+      <td class="pass-id">aria-conditional-attr</td>
+      <td class="pass-desc">Ensure ARIA attributes are used as described in the specification of the element's role</td>
+      <td class="pass-count">1</td>
+    </tr>
+    <tr>
+      <td class="pass-id">aria-prohibited-attr</td>
+      <td class="pass-desc">Ensure ARIA attributes are not prohibited for an element's role</td>
+      <td class="pass-count">1</td>
+    </tr>
+    <tr>
+      <td class="pass-id">aria-valid-attr-value</td>
+      <td class="pass-desc">Ensure all ARIA attributes have valid values</td>
+      <td class="pass-count">1</td>
+    </tr>
+    <tr>
+      <td class="pass-id">aria-valid-attr</td>
+      <td class="pass-desc">Ensure attributes that begin with aria- are valid ARIA attributes</td>
+      <td class="pass-count">1</td>
+    </tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Generated with axe-core 4.13.0 · Storybook component tests · 7 stories
+</footer>
+
+</body>
+</html>

@@ -17,6 +17,7 @@
     "react": "catalog:"
   },
   "dependencies": {
+    "@cv-builder/storybook-addon-a11y-panel": "workspace:*",
     "@cv-builder/tokens": "workspace:*",
     "@iconify/react": "^6.0.2",
     "clsx": "catalog:",

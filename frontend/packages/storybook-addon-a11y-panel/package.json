@@ -1,0 +1,25 @@
+{
+  "name": "@cv-builder/storybook-addon-a11y-panel",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "main": "./src/preset.ts",
+  "exports": {
+    ".": "./src/preset.ts",
+    "./manager": "./src/manager.tsx",
+    "./preview": "./src/preview.tsx"
+  },
+  "dependencies": {
+    "axe-core": "^4.10.0"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "storybook": "catalog:"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "react": "catalog:",
+    "storybook": "catalog:",
+    "typescript": "catalog:"
+  }
+}
