@@ -7,7 +7,6 @@ const meta: Meta<typeof Input> = {
   decorators: [
     (Story) => (
       <div style={{ maxWidth: 320 }}>
-        <label htmlFor="story-input">Email</label>
         <Story />
       </div>
     ),
