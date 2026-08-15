@@ -10,6 +10,25 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+
+        weasyLibs = with pkgs; [
+          stdenv.cc.cc.lib
+          glib
+          pango
+          cairo
+          gdk-pixbuf
+          libffi
+          fontconfig
+        ];
+
+        runtimeBins = with pkgs; [ python312 uv bash coreutils ];
+
+        startScript = pkgs.writeShellScript "cv-builder-start" ''
+          set -e
+          cd /app
+          uv sync --no-dev
+          exec uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
+        '';
       in
       {
         devShells.default = pkgs.mkShell {
@@ -34,14 +53,7 @@
             export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib:$LD_LIBRARY_PATH"
 
             # WeasyPrint needs gobject/pango/cairo system libs
-            export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [
-              pkgs.glib
-              pkgs.pango
-              pkgs.cairo
-              pkgs.gdk-pixbuf
-              pkgs.libffi
-              pkgs.fontconfig
-            ]}:$LD_LIBRARY_PATH"
+            export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath weasyLibs}:$LD_LIBRARY_PATH"
 
             # Playwright bundled Chromium needs these system libs on NixOS
             unset PLAYWRIGHT_BROWSERS_PATH
@@ -84,6 +96,26 @@
               uv sync
             fi
           '';
+        };
+
+        packages.dockerImage = pkgs.dockerTools.buildLayeredImage {
+          name = "cv-builder";
+          tag = "latest";
+
+          contents = runtimeBins ++ weasyLibs ++ [ pkgs.cacert ];
+
+          config = {
+            WorkingDir = "/app";
+            ExposedPorts."8000/tcp" = {};
+            Env = [
+              "PATH=${pkgs.lib.makeBinPath runtimeBins}"
+              "LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath weasyLibs}"
+              "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+              "HOME=/root"
+              "UV_CACHE_DIR=/tmp/uv-cache"
+            ];
+            Cmd = [ "${startScript}" ];
+          };
         };
       });
 }

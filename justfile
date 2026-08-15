@@ -16,6 +16,13 @@ fmt:
     uv run black .
     uv run ruff check --fix .
 
+# build the Docker image from the Nix flake
+build-image:
+    nix build \
+      --option substituters https://cache.nixos.org \
+      --option trusted-public-keys "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" \
+      .#dockerImage && docker load < result
+
 # bring up app + postgres
 up:
     docker compose up -d

@@ -1,10 +1,15 @@
 services:
   app:
-    build: .
+    image: cv-builder:latest
     ports:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql+asyncpg://cv_builder:cv_builder@db:5432/cv_builder
+    volumes:
+      - ./app:/app/app:ro
+      - ./pyproject.toml:/app/pyproject.toml:ro
+      - ./uv.lock:/app/uv.lock:ro
+      - uv-venv:/app/.venv
     depends_on:
       - db
 
@@ -22,3 +27,4 @@ services:
 
 volumes:
   pgdata:
+  uv-venv:
