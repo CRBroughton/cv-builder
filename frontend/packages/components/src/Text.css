@@ -1,0 +1,14 @@
+.cv-text {
+  margin: 0;
+  font-family: var(--cv-font-family-base);
+}
+
+.cv-text--sm  { font-size: var(--cv-font-size-sm); }
+.cv-text--md  { font-size: var(--cv-font-size-md); }
+.cv-text--lg  { font-size: var(--cv-font-size-lg); }
+
+.cv-text--primary   { color: var(--cv-color-text-primary); }
+.cv-text--secondary { color: var(--cv-color-text-secondary); }
+
+.cv-text--regular  { font-weight: var(--cv-font-weight-regular); }
+.cv-text--semibold { font-weight: var(--cv-font-weight-semibold); }
