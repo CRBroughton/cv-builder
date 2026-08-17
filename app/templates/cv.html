@@ -264,12 +264,11 @@
         <section>
             <div class="eyebrow">Technical Skills</div>
             {% for s in skills_sections %}
-            <dl class="skills-grid">
-                {% for item in s.content.items %}
-                <dt>{{ item.label }}</dt>
-                <dd>{{ item.value }}</dd>
+            <ul class="skills-list">
+                {% for item in s.content['items'].split(',') %}
+                <li>{{ item.strip() }}</li>
                 {% endfor %}
-            </dl>
+            </ul>
             {% endfor %}
         </section>
         {% endif %}

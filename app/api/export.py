@@ -1,4 +1,5 @@
 from io import BytesIO
+from pathlib import Path
 from typing import Annotated
 from uuid import UUID
 
@@ -8,6 +9,8 @@ from jinja2 import Environment, FileSystemLoader
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from weasyprint import HTML
+
+TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
 
 from app.core.dependencies import get_current_user
 from app.db.session import get_session
@@ -41,7 +44,7 @@ async def export(
 
     sections = sections_result.scalars().all()
 
-    env = Environment(loader=FileSystemLoader("app/templates"))
+    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
     template = env.get_template("cv.html")
     html = template.render(
         cv=cv,
