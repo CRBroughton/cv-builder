@@ -47,6 +47,10 @@ migrate:
 seed:
     uv run python -m app.db.seed
 
+# remove seed data
+unseed:
+    uv run python -m app.db.seed unseed
+
 # generate frontend API client from running backend OpenAPI spec
 generate-api:
     cd frontend && pnpm generate:api
