@@ -14,8 +14,9 @@ export type ApiError = {
   message: string;
 };
 
-type CV = z.infer<typeof CVResponse>;
-type Section = z.infer<typeof SectionResponse>;
+export type CV = z.infer<typeof CVResponse>;
+export type Section = z.infer<typeof SectionResponse>;
+export type { SectionType } from "./generated.js";
 type SectionCreateInput = z.infer<typeof SectionCreate>;
 type SectionUpdateInput = z.infer<typeof SectionUpdate>;
 type SectionReorderInput = z.infer<typeof SectionReorder>;
