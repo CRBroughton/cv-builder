@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -p tsconfig.app.json && vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "storybook": "storybook dev -p 6007",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@cv-builder/api": "workspace:*",
@@ -25,6 +27,12 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
+    "@storybook/addon-a11y": "catalog:",
+    "storybook": "catalog:",
+    "@storybook/addon-themes": "^10.5.8",
+    "@storybook/react": "catalog:",
+    "@storybook/react-vite": "catalog:",
+    "@cv-builder/storybook-addon-a11y-panel": "workspace:*",
     "jsdom": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
