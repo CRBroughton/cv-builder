@@ -6,6 +6,8 @@ import { ThemeProvider } from "../context/theme.js";
 import { Login } from "../pages/Login.js";
 import { Register } from "../pages/Register.js";
 import { Dashboard } from "../pages/Dashboard.js";
+import { CVEditor } from "../pages/CVEditor/index.js";
+import { CVEditorProvider } from "../pages/CVEditor/CVEditorProvider.js";
 
 export function App() {
   return (
@@ -27,7 +29,9 @@ export function App() {
           path="/:id"
           element={
             <ProtectedRoute>
-              <div style={{ padding: "2rem" }}>Editor (Phase 13)</div>
+              <CVEditorProvider>
+                <CVEditor />
+              </CVEditorProvider>
             </ProtectedRoute>
           }
         />
