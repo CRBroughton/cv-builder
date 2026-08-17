@@ -348,6 +348,13 @@ function Panel() {
       setScanProgress((p) => ({ ...p, done: p.done + 1 }));
       navigateNext();
     },
+    // "storyRendered" fires after the story renders AND the play function completes.
+    // Using this instead of a fixed setTimeout so stories with long play functions
+    // don't get scanned mid-interaction and don't block the queue.
+    storyRendered: (storyId: string) => {
+      if (waitingFor.current !== storyId) return;
+      emit(EVENTS.SCAN_REQUEST, storyId, false);
+    },
   });
 
   function navigateNext() {
@@ -358,7 +365,8 @@ function Panel() {
     }
     waitingFor.current = next;
     api.selectStory(next);
-    setTimeout(() => emit(EVENTS.SCAN_REQUEST, next, false), 400);
+    // No setTimeout — storyRendered handler fires SCAN_REQUEST once the story
+    // (and any play function) has fully completed.
   }
 
   function handleScanCurrent() {
